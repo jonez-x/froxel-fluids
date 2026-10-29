@@ -4,6 +4,6 @@ Hybrid smoke simulation: a coarse world grid (Stable Fluids) plus a camera-align
 
 Computer Graphics Project, Uni Tübingen, Group G04.
 
-Project definition, prior work and scope: [Froxel Fluids - Neuheit und Eingrenzung (Google Doc)](https://docs.google.com/document/d/15GpXB0JS62qoet11bHFKJdpixnmvYnlXJhLf4tdMfhU/edit)
+Research and tech stack: see [planung/](planung/).
 
-Status: research and scoping, no code yet. Planned stack: Rust + wgpu + WGSL.
+Status: research and scoping, no code yet.
