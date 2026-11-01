@@ -1,4 +1,4 @@
-use crate::field::Field;
+use crate::{N, field::Field};
 
 ///Sim struct that contains all data fields
 pub struct Sim {
@@ -39,5 +39,21 @@ impl Sim {
                 }
             }
         }
+    }
+
+    pub fn advect(&self, field: &Field, dt: f32) -> Field {
+        let mut new_field = Field::new(N);
+        for k in 0..N {
+            for j in 0..N {
+                for i in 0..N {
+                    let x_back = i as f32 - dt * self.u.get(i, j, k);
+                    let y_back = j as f32 - dt * self.v.get(i, j, k);
+                    let z_back = k as f32 - dt * self.w.get(i, j, k);
+                    let new_sample = field.sample_at_position(x_back, y_back, z_back);
+                    new_field.set(i, j, k, new_sample);
+                }
+            }
+        }
+        new_field
     }
 }
