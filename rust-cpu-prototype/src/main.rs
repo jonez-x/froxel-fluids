@@ -1,19 +1,23 @@
 mod field;
 use field::Field;
+mod render;
 mod sim;
+use macroquad::prelude::*;
 use sim::Sim;
 
 const N: usize = 48;
 
-fn main() {
-    let mut density = Field::new(N);
-    density.set(11, 10, 10, 2.0);
-    let test1 = density.sample_at_position(10.0, 10.0, 10.0);
-    let test2 = density.sample_at_position(10.5, 10.0, 10.0);
-    println!("{}, {}", test1, test2);
-
+#[macroquad::main("Froxel Fluids CPU Prototype")]
+async fn main() {
     let mut sim = Sim::new(N);
-    sim.add_smoke_source();
-    let sum_d: f32 = sim.r.data.iter().sum();
-    println!("Density Sum={}", sum_d)
+    sim.v.data.fill(0.3);
+
+    loop {
+        sim.add_smoke_source();
+        sim.r = sim.advect(&sim.r, 1.0);
+
+        clear_background(BLACK);
+        render::draw_front_view(&sim);
+        next_frame().await;
+    }
 }
