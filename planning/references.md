@@ -60,6 +60,16 @@ As of: 2026-11-01. Every DOI below was resolved through Crossref or the publishe
 | Kim07 | B. Kim, Y. Liu, I. Llamas, J. Rossignac. Advections with Significantly Reduced Dissipation and Diffusion (BFECC). IEEE TVCG 13(1), 2007. | [10.1109/TVCG.2007.3](https://doi.org/10.1109/TVCG.2007.3) | Less blur in the transfer | meta |
 | Selle08 | A. Selle, R. Fedkiw, B. Kim, Y. Liu, J. Rossignac. An Unconditionally Stable MacCormack Method. J. Sci. Comput. 35, 2008. | [10.1007/s10915-007-9166-4](https://doi.org/10.1007/s10915-007-9166-4) | Less blur in the transfer | meta |
 
+## E2. Particles and turbulence energy (variant P, extensions T2/T3)
+
+| Key | Reference | DOI / link | Why we cite it | Checked |
+|---|---|---|---|---|
+| Zhu05 | Y. Zhu, R. Bridson. Animating Sand as a Fluid. ACM TOG 24(3), 2005. | [10.1145/1073204.1073298](https://doi.org/10.1145/1073204.1073298) | PIC/FLIP in graphics: particles carry state, grid gives pressure (variant P) | meta |
+| Selle05 | A. Selle, N. Rasmussen, R. Fedkiw. A Vortex Particle Method for Smoke, Water and Explosions. ACM TOG 24(3), 2005. | [10.1145/1073204.1073282](https://doi.org/10.1145/1073204.1073282) | Particles add detail to a grid sim (variant P) | meta |
+| Narain08 | R. Narain, J. Sewall, M. Carlson, M. C. Lin. Fast Animation of Turbulence Using Energy Transport and Procedural Synthesis. ACM TOG 27(5), 2008. | [10.1145/1409060.1409119](https://doi.org/10.1145/1409060.1409119) | Turbulent energy on the coarse grid, persistent synthesized detail; mechanism behind T2 and T3. Not view-dependent. | full |
+| Pfaff10 | T. Pfaff, N. Thuerey, J. Cohen, S. Tariq, M. Gross. Scalable Fluid Simulation Using Anisotropic Turbulence Particles. ACM TOG 29(6), 2010. | [10.1145/1882261.1866196](https://doi.org/10.1145/1882261.1866196) | Very coarse grid plus detail particles; turbulence only on rendered particles. Closest to variant P; says nothing about camera motion or off-screen detail. | full |
+| Chentanez14 | N. Chentanez, M. Müller. Mass-Conserving Eulerian Liquid Simulation. IEEE TVCG 20(1), 2014. | [10.1109/TVCG.2013.19](https://doi.org/10.1109/TVCG.2013.19) | Mass correction idea behind T1 | meta |
+
 ## F. Evaluation
 
 | Key | Reference | DOI / link | Why we cite it | Checked |
@@ -82,6 +92,7 @@ Kept so the report can state how the novelty claim was checked.
 | 2026-11-01 | Crossref | view-dependent smoke simulation camera adaptive grid; perspective grid smoke simulation; froxel; temporal reprojection volumetric simulation smoke | Found Bunlutangtum11; otherwise nothing new |
 | 2026-11-01 | GitHub code search | "froxel" + advection / divergence / navier / pressure jacobi / advect / "stable fluids" | ~40 hits per query, almost all fog renderers; one overlap: ByroRedux |
 | 2026-11-01 | Web search | foveated / temporal fluid VR; moving and translating grids | Wang24/25/26, Shah04, Patel05, Zhu13 |
+| 2026-11-01 | Web search | off-screen detail cache / restore; mass-conserving residual transfer; resolution-change detail synthesis; FLIP on frustum or view-dependent grids | Narain08, Pfaff10, Chentanez14; no transfer of a detail layer between frusta, no FLIP on a frustum grid found |
 | open | Shadertoy | froxel, advect | Blocked by the site's bot check; to do by hand |
 
 ## Still open

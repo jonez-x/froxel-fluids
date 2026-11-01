@@ -35,6 +35,8 @@ Woo 2006 names a moving camera as future work; we take that step with a differen
 
 If the detail is pure, stateless noise, there is nothing to transport, and then there is no contribution.
 
+What separates the transfer from ByroRedux's plain resampling (details in [plan.md](plan.md)): T1 conservative residual transfer, T2 scale-aware transfer when the camera dollies, T3 off-screen detail memory in the world grid, T4 guard band, T5 confidence per froxel. The mechanisms exist (multigrid restriction, mass correction, energy transport after Narain 2008 and Pfaff 2010, TAA history rejection); a search on 2026-11-01 found none of them applied to a detail layer carried between camera frusta. Claim the combination and the measurements, not the individual mechanisms.
+
 ## How we phrase it
 
 > Froxel-only simulation with reprojection exists. To our knowledge, no prior work couples a coarse world-space simulation with a persistent detail layer on a camera-aligned froxel grid that is transferred between frusta and re-seeded from the world grid where new space becomes visible, and none measures what this transfer gains over resetting the detail or over a froxel-only simulation.
