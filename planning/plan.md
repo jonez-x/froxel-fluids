@@ -1,6 +1,6 @@
 # Plan
 
-As of: 2026-11-01. Builds on [research.md](research.md). Items marked **proposal** still need a group decision.
+As of: 2026-11-19 (stack switched to C++, see [tech-stack.md](tech-stack.md)). Builds on [research.md](research.md). Items marked **proposal** still need a group decision.
 
 ## Research question
 
@@ -67,7 +67,7 @@ Priority: T1 and T3 are the core (they only work with a world grid). T2 if time 
   - temporal flicker: frame-to-frame difference compared with the reference's own frame-to-frame difference
   - detail kept: high-frequency energy of the visible density over time
   - mass drift in view across transfers
-  - memory (MB) and GPU time per pass (ms, wgpu-profiler)
+  - memory (MB) and GPU time per pass (ms, `GpuTimer` in `ff_gpu`)
 - **Hypotheses**
   - H1: D beats C on flicker and detail kept under camera motion.
   - H2: D beats B on "turn away and back", because the world grid keeps what left the view.
@@ -79,22 +79,26 @@ Priority: T1 and T3 are the core (they only work with a world grid). T2 if time 
 
 | Date | Course milestone | Our target |
 |---|---|---|
-| 10.11.2026 | First experiments | CPU 3D Stable Fluids MVP runs (density moves, projection lowers divergence). wgpu compute "hello world" runs on every team machine. World-to-froxel mapping written and unit-tested. |
+| 10.11.2026 | First experiments | CPU 3D Stable Fluids MVP runs (density moves, projection lowers divergence). WebGPU compute "hello world" runs on every team machine. World-to-froxel mapping written and unit-tested. |
 | 24.11.2026 | Core feature works | World grid on the GPU. Froxel grid with detail layer, static camera. Transfer kernel works with a moving camera (debug slice view). **Decision gate D vs P.** |
-| 15.12.2026 | Blockout prototype | Full pipeline with ray-marching, egui panel, scripted camera paths, toggle between variants C and D. T1 and T4 in. |
+| 15.12.2026 | Blockout prototype | Full pipeline with ray-marching, UI panel, scripted camera paths, toggle between variants C and D. T1 and T4 in. |
 | 19.01.2027 | Full demo | Variants A to D (and P if chosen), T3 and T5, reference simulation, evaluation harness writes all metrics to CSV. T2 if time allows. |
 | 02.02.2027 | Final presentation | Results, plots, live demo. |
 | 31.03.2027 | Report in ILIAS | Paper-style report with numerical evaluation. |
+
+Status 2026-11-19: CPU Stable Fluids MVP done (Rust prototype, ported 1:1 to C++ in `world_solver/`, same results). World-to-froxel mapping done and tested (W2). WebGPU "hello world" open: the shared `ff_gpu` target is not in the repository yet.
 
 ## Workstreams (proposal, five people)
 
 | Workstream | Owner |
 |---|---|
-| World grid solver (Stable Fluids, CPU then GPU) | Jonas |
-| Froxel grid and transfer (the research core) | TBD |
-| Rendering: ray-march, depth composite, egui | TBD |
+| W1 World grid solver (Stable Fluids, CPU then GPU), `world_solver/` | Jonas |
+| W2 Froxel grid geometry, history, density sampling, `froxel_grid/` | Andreas |
+| Transfer (the research core) | TBD |
+| Rendering: ray-march, depth composite, UI | TBD |
 | Evaluation: reference sim, camera paths, metrics | TBD |
-| Detail model, seeding, GPU profiling, build setup | TBD |
+| W5 Detail model (turbulence synthesis), `turbulence_synthesis/` | TBD |
+| Seeding, GPU profiling, build setup | TBD |
 
 ## Risks
 
@@ -102,12 +106,13 @@ Priority: T1 and T3 are the core (they only work with a world grid). T2 if time 
 |---|---|
 | Repeated resampling blurs the detail | one interpolation per frame; T5; MacCormack/BFECC on the transfer; fallback variant P |
 | Depth slices too coarse up close (ByroRedux sees blocky flames) | tune the depth distribution; report it as a limitation |
-| Rust is new to most of us | CPU prototype first; fallback TypeScript + WebGPU with the same WGSL |
+| Shared GPU infrastructure (`ff_gpu`) is not in the repository; W2 and W5 cannot be built | collect it into `gpu/` before 24.11 (see `gpu/README.md`) |
 | Contribution is narrow | measure honestly; B vs D and C vs D are results either way |
 
 ## Open decisions for the group
 
-- Language: Rust + wgpu (see [tech-stack.md](tech-stack.md)) or C++. One objection for C++ came up; decide before 10.11.
+- Where `ff_gpu` comes from (W2 and W5 were built against a version outside this repository).
+- UI library for the panel (egui is gone with Rust).
 - Detail layer: density only (proposal for the MVP), or density plus detail velocity.
 - Coupling: one-way world to froxel (proposal), two-way as an extension.
 - Seed for newly visible froxels: zero (MVP) or synthesized from vorticity.
