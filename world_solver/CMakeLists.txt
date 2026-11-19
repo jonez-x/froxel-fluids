@@ -1,5 +1,5 @@
 # World solver (W1): coarse world grid, Stable Fluids (Stam 1999) on the CPU.
-# C++ port of rust-cpu-prototype/. Targets created here:
+# C++ port of the former Rust CPU prototype (git history). Targets created here:
 #   ff_world      the solver (Field, Sim)
 #   world_demo    front view summing density along z (option FF_WORLD_BUILD_APPS, needs raylib)
 #   world_tests   doctest tests (needs doctest::doctest)

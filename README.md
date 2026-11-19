@@ -15,7 +15,6 @@ Status (2026-11-19): C++20 + WebGPU, built with CMake from the repository root. 
 | [turbulence_synthesis/](turbulence_synthesis/) | W5 procedural sub-grid detail per camera, CPU reference and GPU | |
 | [gpu/](gpu/README.md) | shared WebGPU infrastructure `ff_gpu`, **not in the repository yet** | |
 | [app/](app/README.md) | the integrated program | |
-| [rust-cpu-prototype/](rust-cpu-prototype/) | original Rust CPU prototype, kept as reference | Jonas |
 
 ```
 cmake -S . -B build -G Ninja

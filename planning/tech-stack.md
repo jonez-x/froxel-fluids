@@ -36,7 +36,7 @@ Build: `cmake -S . -B build -G Ninja && cmake --build build && ctest --test-dir 
 
 ## Rejected
 
-- Rust + wgpu: the first choice (see git history); the group moved to C++. The Rust CPU prototype stays in `rust-cpu-prototype/` as a reference until the C++ world solver has replaced it.
+- Rust + wgpu: the first choice (see git history); the group moved to C++. The Rust CPU prototype was ported 1:1 to `world_solver/` and then removed (still in the git history).
 - NVIDIA Warp: runs only on the CPU on Macs.
 - Taichi: last release July 2025.
 - OpenGL compute: macOS only supports OpenGL 4.1.
