@@ -1,19 +1,15 @@
-# gpu/ (ff_gpu): shared WebGPU infrastructure
+# Shared WebGPU library
 
-Not in the repository yet. `froxel_grid/` and `turbulence_synthesis/` were developed against an existing
-`ff_gpu` target outside this repository; the root `CMakeLists.txt` skips both modules (and `app/`) until
-this folder has a `CMakeLists.txt` that defines `ff_gpu`.
+`ff_gpu` provides the GPU context and queue, move-only WebGPU handles, buffers, compute passes and optional GPU timing. The froxel grid and turbulence modules use the same device.
 
-What the modules use (collected from their sources):
+Add the module before its consumers in the parent CMake project:
 
-- WebGPU: wgpu-native v24.0.3.1, C API (`wgpu*` functions, `WGPU*` types). CMake function
-  `target_copy_webgpu_binaries` (optional, used by `turbulence_gpu_tests`).
-- `gpu/context.hpp`: `ff::gpu::GpuContext` with `create()` (throws `ff::gpu::NoAdapterError` without a GPU),
-  `device()`, `queue()`, `waitUntil(...)`.
-- `gpu/buffer.hpp`: `ff::gpu::GpuBuffer`.
-- `gpu/timer.hpp`: `ff::gpu::GpuTimer` (GPU time per pass).
-- `gpu/handle.hpp`: RAII handles `ShaderModule`, `PipelineLayout`, `ComputePipeline`, `BindGroupLayout`,
-  `BindGroup`, `CommandEncoder`, `CommandBuffer`, `ComputePassEncoder`; `ff::gpu::sv(...)` (string view to
-  `WGPUStringView`).
-- `gpu/verify.hpp`.
-- `float_volume.cpp` must **not** be part of `ff_gpu`; `froxel_grid` compiles it.
+```cmake
+add_subdirectory(gpu)
+add_subdirectory(froxel_grid)          # requires glm::glm
+add_subdirectory(turbulence_synthesis)
+```
+
+Link a consumer with `target_link_libraries(my_target PRIVATE ff_gpu)`. The module requires C++20 and CMake 3.25 or later. It reuses a compatible `webgpu` target or fetches the pinned [WebGPU-distribution](https://github.com/eliemichel/WebGPU-distribution/tree/17dcd42a7683355e7a40ac4e97e77f36dff5b5ab) for wgpu-native v24.0.3.1. When using that distribution, call `target_copy_webgpu_binaries(my_executable)` for executables.
+
+`GpuTimer` returns native timestamp ticks when supported. To obtain milliseconds, supply the selected device's verified nanoseconds per tick to the constructor or set `FF_GPU_TIMESTAMP_PERIOD_NS`.
