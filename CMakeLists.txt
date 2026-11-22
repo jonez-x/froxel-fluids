@@ -19,16 +19,16 @@ enable_testing()
 
 add_subdirectory(world_solver)
 
-# froxel_grid and turbulence_synthesis need the shared WebGPU target ff_gpu (gpu/context.hpp,
-# buffer.hpp, handle.hpp, timer.hpp, verify.hpp), which is not in the repository yet. See gpu/README.md.
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/gpu/CMakeLists.txt")
-    add_subdirectory(gpu)
-endif()
+# froxel_grid and turbulence_synthesis need the shared WebGPU target ff_gpu (gpu/, see gpu/README.md).
+add_subdirectory(gpu)
 
 if(TARGET ff_gpu)
     add_subdirectory(froxel_grid)
     add_subdirectory(turbulence_synthesis)
-    add_subdirectory(app)
+    # app/ only has a README so far; add it once it has its own CMakeLists.txt.
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/app/CMakeLists.txt")
+        add_subdirectory(app)
+    endif()
 else()
     message(WARNING "ff_gpu is missing (see gpu/README.md): skipping froxel_grid, turbulence_synthesis and app.")
 endif()
